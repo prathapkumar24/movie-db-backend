@@ -9,7 +9,7 @@ const app = express();
 // Middleware
 //app.use(cors());
 app.use(cors({
-  origin: "http://localhost:5173",   // Allow only Vite frontend
+  origin: "http://react-app-moviedb.s3-website.ap-south-1.amazonaws.com",   // Allow only Vite frontend
   methods: "GET,POST,PUT,DELETE",
   credentials: true                  // if using cookies
 }));
