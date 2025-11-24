@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/movie-db-backend || exit 1
+            cd /home/ec2-user/movie-db-backend || exit 1
             echo '📥 Pulling latest code...'
             git pull
             echo '📦 Installing dependencies...'
