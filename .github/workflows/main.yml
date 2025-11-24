@@ -20,17 +20,17 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST "
+          ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ec2-user/movie-db-backend || exit 1
 
-            echo '📥 Pulling latest code...'
+            echo "📥 Pulling latest code..."
             git pull
 
-            echo '📦 Installing dependencies...'
+            echo "📦 Installing dependencies..."
             npm install --production
 
-            echo '🚀 Restarting PM2...'
+            echo "🚀 Restarting PM2..."
             pm2 restart my-app || pm2 start npm --name my-app -- run start
 
             pm2 save
-          "
+          EOF
