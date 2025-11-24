@@ -1,0 +1,28 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Copy SSH Key
+        run: |
+          echo "$EC2_KEY" > deploy_key.pem
+          chmod 600 deploy_key.pem
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST "
+            cd /home/ec2-user/movie-db-backend &&
+            git pull &&
+            npm install &&
+            pm2 restart my-app || pm2 start index.js --name my-app
+          "
