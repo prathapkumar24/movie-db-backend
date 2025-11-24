@@ -2,7 +2,7 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -18,18 +18,17 @@ jobs:
           chmod 600 deploy_key.pem
 
       - name: Deploy to EC2
+        env:
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST "
             cd /home/ec2-user/movie-db-backend || exit 1
-
-            echo "📥 Pulling latest code..."
+            echo '📥 Pulling latest code...'
             git pull
-
-            echo "📦 Installing dependencies..."
+            echo '📦 Installing dependencies...'
             npm install --production
-
-            echo "🚀 Restarting PM2..."
+            echo '🚀 Restarting PM2...'
             pm2 restart my-app || pm2 start npm --name my-app -- run start
-
             pm2 save
-EOF
+          "
