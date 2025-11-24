@@ -32,4 +32,4 @@ jobs:
             pm2 restart my-app || pm2 start npm --name my-app -- run start
 
             pm2 save
-          EOF
+EOF
