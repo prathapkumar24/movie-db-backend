@@ -22,7 +22,7 @@ app.use('/auth', authRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Movie DB API - AWS' });
+  res.json({ message: 'Welcome to Movie DB API - Powered by AWS' });
 });
 
 // Error handling middleware
