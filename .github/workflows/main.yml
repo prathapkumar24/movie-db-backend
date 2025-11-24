@@ -19,12 +19,9 @@ jobs:
           chmod 600 key.pem
 
       - name: Deploy to EC2
-        env:
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST"
-            cd /home/ec2-user/movie-db-backend || exit 1
+          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/movie-db-backend || exit 1
             echo '📥 Pulling latest code...'
             git pull
             echo '📦 Installing dependencies...'
@@ -32,4 +29,4 @@ jobs:
             echo '🚀 Restarting PM2...'
             pm2 restart my-app || pm2 start npm --name my-app -- run start
             pm2 save
-          "
+          EOF
