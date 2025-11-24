@@ -2,20 +2,21 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Copy SSH Key
+      - name: Setup SSH key
         run: |
-          echo "$EC2_KEY" > deploy_key.pem
-          chmod 600 deploy_key.pem
+          echo "${{ secrets.EC2_KEY }}" > key.pem
+          chmod 600 key.pem
 
       - name: Deploy to EC2
         env:
